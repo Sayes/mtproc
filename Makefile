@@ -1,4 +1,4 @@
-INC_FLAGS = -I. -Iinclude
+INC_FLAGS = -I. -Iinclude -I$(BOOST_HOME)/include
 LIB_FLAGS = -L/usr/lib64
 
 CFLAGS = -std=c++14 -Wall
@@ -23,10 +23,6 @@ ifeq ($(DEBUG), ON)
 CFLAGS += -g -O0
 else
 CFLAGS += -O2
-endif
-
-ifeq ($(BOOST), -DWITH_BOOST)
-    INC_FLAGS += -I$(BOOST_HOME)/include
 endif
 
 ifeq ($(OPENCV), -DWITH_OPENCV)

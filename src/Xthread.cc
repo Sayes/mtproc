@@ -3,12 +3,16 @@
 #include "include/Xthread.h"
 #include <sys/time.h>
 #include <unistd.h>
+#if defined(WITH_UUID)
 #include <uuid/uuid.h>
+#endif
 #include <fstream>
 #include <iostream>
+#if defined(WITH_OPENCV)
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
+#endif
 #include "include/eupulogger4system.h"
 #include "include/workbasethread.h"
 
