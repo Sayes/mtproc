@@ -4,7 +4,9 @@
 #ifndef INCLUDE_CUTTHREAD_H_
 #define INCLUDE_CUTTHREAD_H_
 
+#if defined(WITH_OPENCV)
 #include <opencv2/imgproc/imgproc.hpp>
+#endif
 #include <string>
 #include <vector>
 #include "include/config.h"
