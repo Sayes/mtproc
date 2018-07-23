@@ -39,4 +39,6 @@ int XThread::do_X_proc() {
   return 0;
 }
 
-void XThread::doX4one(const std::string& param) { std::cout << param << std::endl; }
+void XThread::doX4one(const std::string& param) {
+  printf("%s\n", param.c_str());
+}
