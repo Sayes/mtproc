@@ -1,7 +1,6 @@
 INC_FLAGS = -I. -Iinclude -I$(BOOST_HOME)/include
-LIB_FLAGS = -L/usr/lib64
 
-CFLAGS = -std=c++14 -Wall
+CFLAGS = -std=c++11 -Wall
 
 ifeq ($(OUTPUT_TARGET), -DSHARED_LIB)
     TARGETS = libpywrap.so

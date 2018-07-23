@@ -4,6 +4,8 @@
 #ifndef INCLUDE_PTHINF_H_
 #define INCLUDE_PTHINF_H_
 
+#include <string>
+
 struct pthinf {
   std::string pthfn;
 };
