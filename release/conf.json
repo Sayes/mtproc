@@ -1,0 +1,8 @@
+{
+  "thread_cnt"  : 1,
+  "src_path"    : "/home/syz/data/201103180003/201103180003_0000.jpg",
+  "dest_path"   : "/tmp/xtestdest/",
+  "model_path"  : "/usr/local/seetatech/model/",
+  "log_path"    : "/tmp/xtestlog/",
+  "pthfn_lst"   : ""
+}
