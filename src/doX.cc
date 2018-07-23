@@ -99,6 +99,4 @@ void tasks_collection(const char* srcpath, std::vector<pthinf>& pathfilenames) {
   LOG(_INFO_, "tasks_collection() get %d image files", img_cnt);
 }
 
-void do_X(std::vector<pthinf>& tasks, int thread_cnt) {
-  do_X_impl<XThread>(tasks, thread_cnt);
-}
+void do_X(std::vector<pthinf>& tasks, int thread_cnt) { do_X_impl<XThread>(tasks, thread_cnt); }

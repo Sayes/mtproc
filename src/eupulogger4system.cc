@@ -85,8 +85,7 @@ void CEupuLogger4System::Release() {
   }
 }
 
-CEupuLogger4System::CEupuLogger4System()
-    : m_ErrPtr(0), m_FtlPtr(0), m_BugPtr(0) {
+CEupuLogger4System::CEupuLogger4System() : m_ErrPtr(0), m_FtlPtr(0), m_BugPtr(0) {
   m_strTmp = "";
   m_Level = LL_DEBUG;
   m_IsDebug = false;
@@ -145,8 +144,8 @@ void CEupuLogger4System::Debug4Sys(char *strDebug) {
   Debug(m_BugPtr, strDebug);
 }
 
-void CEupuLogger4System::WriteLog(const char *filename, int32_t line,
-                                  LOGLEVEL level, const char *fmt, ...) {
+void CEupuLogger4System::WriteLog(const char *filename, int32_t line, LOGLEVEL level,
+                                  const char *fmt, ...) {
   char msgbuf[MAX_MSGSIZE];
   char buf[MAX_MSGSIZE];
   struct timeval tmv;
@@ -178,10 +177,9 @@ void CEupuLogger4System::WriteLog(const char *filename, int32_t line,
   snprintf(buf, sizeof(buf),
            "%04d/%02d/%02d %02d:%02d:%02d:%06u [0x%08x, "
            "0x%08x] <%-5s> (%s, %06d) %s",
-           tme.tm_year + 1900, tme.tm_mon + 1, tme.tm_mday, tme.tm_hour,
-           tme.tm_min, tme.tm_sec, (uint32_t)tmv.tv_usec, pid,
-           (int32_t)pthread_self(), GetLogLevelStr(level), filename, line,
-           msgbuf);
+           tme.tm_year + 1900, tme.tm_mon + 1, tme.tm_mday, tme.tm_hour, tme.tm_min, tme.tm_sec,
+           (uint32_t)tmv.tv_usec, pid, (int32_t)pthread_self(), GetLogLevelStr(level), filename,
+           line, msgbuf);
 
 #elif defined(_WIN32) || defined(_WIN64)
   time_t tm_sec = tmv.tv_sec;
@@ -196,9 +194,8 @@ void CEupuLogger4System::WriteLog(const char *filename, int32_t line,
   snprintf(buf, sizeof(buf),
            "%04d/%02d/%02d %02d:%02d:%02d:%06u [0x%08x, "
            "0x%08x] <%-5s> (%s, %06d) %s",
-           p->tm_year + 1900, p->tm_mon + 1, p->tm_mday, p->tm_hour, p->tm_min,
-           p->tm_sec, (uint32_t)tmv.tv_usec, pid, threadid,
-           GetLogLevelStr(level), filename, line, msgbuf);
+           p->tm_year + 1900, p->tm_mon + 1, p->tm_mday, p->tm_hour, p->tm_min, p->tm_sec,
+           (uint32_t)tmv.tv_usec, pid, threadid, GetLogLevelStr(level), filename, line, msgbuf);
 
 #endif
 
@@ -213,9 +210,8 @@ void CEupuLogger4System::SetDebugMode(bool bdebug) { m_IsDebug = bdebug; }
 
 void CEupuLogger4System::SetLogLevel(LOGLEVEL level) { m_Level = level; }
 
-void CEupuLogger4System::WriteHex(const char *filename, int32_t line,
-                                  LOGLEVEL level, const char *title,
-                                  const char *buf, int32_t buflen) {
+void CEupuLogger4System::WriteHex(const char *filename, int32_t line, LOGLEVEL level,
+                                  const char *title, const char *buf, int32_t buflen) {
   char msgbuf[MAX_MSGSIZE];
   struct timeval tmv;
   struct tm tme;
@@ -246,10 +242,9 @@ void CEupuLogger4System::WriteHex(const char *filename, int32_t line,
            "%04d/%02d/%02d %02d:%02d:%02d:%06u "
            "[0x%08x, 0x%08x] <%-5s> (%s, %06d) %s: "
            "\n%s",
-           tme.tm_year + 1900, tme.tm_mon + 1, tme.tm_mday, tme.tm_hour,
-           tme.tm_min, tme.tm_sec, (uint32_t)tmv.tv_usec, pid,
-           (int32_t)pthread_self(), GetLogLevelStr(level), filename, line,
-           GETNULLPTR(title), GETNULLSTR(hexdata));
+           tme.tm_year + 1900, tme.tm_mon + 1, tme.tm_mday, tme.tm_hour, tme.tm_min, tme.tm_sec,
+           (uint32_t)tmv.tv_usec, pid, (int32_t)pthread_self(), GetLogLevelStr(level), filename,
+           line, GETNULLPTR(title), GETNULLSTR(hexdata));
 #elif defined(_WIN32) || defined(_WIN64)
   time_t tm_sec = tmv.tv_sec;
   struct tm *p = localtime(&tm_sec);
@@ -260,10 +255,9 @@ void CEupuLogger4System::WriteHex(const char *filename, int32_t line,
   snprintf(msgbuf, sizeof(msgbuf),
            "%04d/%02d/%02d %02d:%02d:%02d:%06u [0x%08x, "
            "0x%08x] <%-5s> (%s, %06d) %s: \n%s",
-           p->tm_year + 1900, p->tm_mon + 1, p->tm_mday, p->tm_hour, p->tm_min,
-           p->tm_sec, (uint32_t)tmv.tv_usec, pid, threadid,
-           GetLogLevelStr(level), filename, line, GETNULLPTR(title),
-           GETNULLSTR(hexdata));
+           p->tm_year + 1900, p->tm_mon + 1, p->tm_mday, p->tm_hour, p->tm_min, p->tm_sec,
+           (uint32_t)tmv.tv_usec, pid, threadid, GetLogLevelStr(level), filename, line,
+           GETNULLPTR(title), GETNULLSTR(hexdata));
 #endif
 
   // if(m_IsDebug)
@@ -290,9 +284,7 @@ const char *CEupuLogger4System::GetLogLevelStr(LOGLEVEL level) {
   return "UNUSE";
 }
 #else
-CEupuLogger4System *CEupuLogger4System::CreateInstance(const char *spath) {
-  return nullptr;
-}
+CEupuLogger4System *CEupuLogger4System::CreateInstance(const char *spath) { return nullptr; }
 CEupuLogger4System *CEupuLogger4System::Logger() { return nullptr; }
 void CEupuLogger4System::Release() {}
 void CEupuLogger4System::Fatal4Sys(const std::string &strFatal) {}
@@ -301,12 +293,11 @@ void CEupuLogger4System::Debug4Sys(const std::string &strDebug) {}
 void CEupuLogger4System::Fatal4Sys(char *strFatal) {}
 void CEupuLogger4System::Error4Sys(char *strError) {}
 void CEupuLogger4System::Debug4Sys(char *strDebug) {}
-void CEupuLogger4System::WriteLog(const char *filename, int32_t line,
-                                  LOGLEVEL level, const char *fmt, ...) {}
+void CEupuLogger4System::WriteLog(const char *filename, int32_t line, LOGLEVEL level,
+                                  const char *fmt, ...) {}
 void CEupuLogger4System::SetDebugMode(bool bdebug) {}
-void CEupuLogger4System::WriteHex(const char *filename, int32_t line,
-                                  LOGLEVEL level, const char *title,
-                                  const char *buf, int32_t buflen) {}
+void CEupuLogger4System::WriteHex(const char *filename, int32_t line, LOGLEVEL level,
+                                  const char *title, const char *buf, int32_t buflen) {}
 void CEupuLogger4System::SetLogLevel(LOGLEVEL level) {}
 const char *CEupuLogger4System::GetLogLevelStr(LOGLEVEL) { return nullptr; }
 CEupuLogger4System::CEupuLogger4System() {}

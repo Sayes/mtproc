@@ -1,19 +1,23 @@
-INC_FLAGS = -I. -Iinclude -I$(OPENCV2_HOME)/include -I$(SEETATECH_HOME)/include -I$(BOOST_HOME)/include
-LIB_FLAGS = -L$(OPENCV2_HOME)/lib -L$(SEETATECH_HOME)/lib -L/usr/lib64
-
-ifeq ($(OUTPUT_TARGET), -DSHARED_LIB)
-TARGETS = libpywrap.so
-    ifeq ($(PY), -DSUPPORT_PYTHON3)
-    INC_FLAGS += -I$(PYTHON3_INC)
-    else
-    INC_FLAGS += -I$(PYTHON2_INC)
-    endif
-CFLAGS += -fPIC -shared -fno-strict-aliasing
-else
-TARGETS = X 
-endif
+INC_FLAGS = -I. -Iinclude
+LIB_FLAGS = -L/usr/lib64
 
 CFLAGS = -std=c++14 -Wall
+
+ifeq ($(OUTPUT_TARGET), -DSHARED_LIB)
+    TARGETS = libpywrap.so
+    CFLAGS += -fPIC -shared -fno-strict-aliasing
+    ifeq ($(PY), -DSUPPORT_PYTHON3)
+    INC_FLAGS += -I$(PYTHON3_INC)
+    LIB_FLAGS += -lpython3.5
+    else
+      ifeq ($(PY), -DSUPPORT_PYTHON2)
+    INC_FLAGS += -I$(PYTHON2_INC)
+    LIB_FLAGS += -lpython2.7
+      endif
+    endif
+else
+    TARGETS = X 
+endif
 
 ifeq ($(DEBUG), ON)
 CFLAGS += -g -O0
@@ -21,16 +25,24 @@ else
 CFLAGS += -O2
 endif
 
-ifeq ($(OUTPUT_TARGET), -DSHARED_LIB)
-    ifeq ($(PY), -DSUPPORT_PYTHON3)
-    INC_FLAGS += -I$(PYTHON3_INC)
-    else
-    INC_FLAGS += -I$(PYTHON2_INC)
-    endif
-	CFLAGS += -fPIC -shared -fno-strict-aliasing
+ifeq ($(BOOST), -DWITH_BOOST)
+    INC_FLAGS += -I$(BOOST_HOME)/include
 endif
 
-ifeq ($(HAVELOG), -DWITH_LOG4CXX)
+ifeq ($(OPENCV), -DWITH_OPENCV)
+    ifeq ($(CV), -DSUPPORT_CV3)
+    INC_FLAGS += -I$(OPENCV3_HOME)/include
+    LIB_FLAGS += -L$(OPENCV3_HOME)/lib
+    else
+      ifeq ($(CV), -DSUPPORT_CV2)
+    INC_FLAGS += -I$(OPENCV2_HOME)/include
+    LIB_FLAGS += -L$(OPENCV2_HOME)/lib
+    CFLAGS += -lopencv_core -lopencv_highgui -lopencv_imgproc -lopencv_video -lopencv_videostab
+      endif
+    endif
+endif
+
+ifeq ($(LOG4CXX), -DWITH_LOG4CXX)
 INC_FLAGS += -I$(LOG4CXX_HOME)/include
 LIB_FLAGS += -L$(LOG4CXX_HOME)/lib -llog4cxx
 endif
@@ -58,6 +70,10 @@ INC_FLAGS += -I$(MYSQLCPPCONN_HOME)/include
 LIB_FLAGS += -L$(MYSQLCPPCONN_HOME)/lib -lmysqlcppconn
 endif
 
+ifeq ($(UUID), -DWITH_UUID)
+CFLAGS += -luuid
+endif
+
 ifeq ($(os_type), Linux)
 CFLAGS += -DOS_LINUX
 endif
@@ -66,7 +82,9 @@ ifeq ($(os_arch), x86_64)
 OSARCH = -m64
 endif
 
-CFLAGS += $(HAVELOG)
+CFLAGS += $(BOOST)
+CFLAGS += $(OPENCV)
+CFLAGS += $(LOG4CXX)
 CFLAGS += $(FILECONF)
 CFLAGS += $(MONGODB)
 CFLAGS += $(MYSQL)
@@ -76,7 +94,7 @@ CFLAGS += $(INC_FLAGS)
 CFLAGS += $(LIB_FLAGS)
 
 all:
-	g++ src/*.cc $(CFLAGS) -lopencv_core -lopencv_highgui -lopencv_imgproc -lopencv_video -lopencv_videostab -lpthread -luuid -o $(TARGETS)
+	g++ src/*.cc $(CFLAGS) -lpthread -o $(TARGETS)
 	mv $(TARGETS) release
 
 clean:

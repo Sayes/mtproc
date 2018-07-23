@@ -32,11 +32,10 @@ class CEupuLogger4System : public CEupuLogger {
   void Fatal4Sys(char *strFatal);
   void Error4Sys(char *strError);
   void Debug4Sys(char *strDebug);
-  void WriteLog(const char *filename, int32_t line, LOGLEVEL level,
-                const char *fmt, ...);
+  void WriteLog(const char *filename, int32_t line, LOGLEVEL level, const char *fmt, ...);
   void SetDebugMode(bool bdebug);
-  void WriteHex(const char *filename, int32_t line, LOGLEVEL level,
-                const char *title, const char *buf, int32_t buflen);
+  void WriteHex(const char *filename, int32_t line, LOGLEVEL level, const char *title,
+                const char *buf, int32_t buflen);
   void SetLogLevel(LOGLEVEL level);
   const char *GetLogLevelStr(LOGLEVEL);
 

@@ -27,8 +27,7 @@ int XThread::process_task() {
 }
 
 int XThread::do_X_proc() {
-  LOG(_INFO_, "XThread::do_X_proc() filenames_ cnt %d, id = %d",
-      filenames_.size(), id_);
+  LOG(_INFO_, "XThread::do_X_proc() filenames_ cnt %d, id = %d", filenames_.size(), id_);
 
   for (auto& it_fn : filenames_) {
     doX4one(it_fn.pthfn);
@@ -36,6 +35,4 @@ int XThread::do_X_proc() {
   return 0;
 }
 
-void XThread::doX4one(const std::string& param) {
-  std::cout << param << std::endl;
-}
+void XThread::doX4one(const std::string& param) { std::cout << param << std::endl; }

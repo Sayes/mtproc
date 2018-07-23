@@ -34,12 +34,8 @@ class Config : public IAocSingleton<Config> {
 
   void set_thread_cnt(int thread_cnt) { cfg_.thread_cnt = thread_cnt; }
   void set_src_path(const std::string &src_path) { cfg_.src_path = src_path; }
-  void set_dest_path(const std::string &dest_path) {
-    cfg_.dest_path = dest_path;
-  }
-  void set_model_path(const std::string &model_path) {
-    cfg_.model_path = model_path;
-  }
+  void set_dest_path(const std::string &dest_path) { cfg_.dest_path = dest_path; }
+  void set_model_path(const std::string &model_path) { cfg_.model_path = model_path; }
   void set_log_path(const std::string &log_path) { cfg_.log_path = log_path; }
   void set_pthfn_lst(const std::string &lst) { cfg_.pthfn_lst = lst; }
 

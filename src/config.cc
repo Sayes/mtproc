@@ -29,8 +29,7 @@ bool Config::init(const std::string &cfg_path) {
 #ifdef WITH_FILECONF
     f.open(cfg_path.c_str());
     if (!f.is_open()) {
-      LOG(_ERROR_, "Config::init() open config file %s failed",
-          cfg_path.c_str());
+      LOG(_ERROR_, "Config::init() open config file %s failed", cfg_path.c_str());
       break;
     }
     f.seekg(0, std::ios::end);
@@ -56,8 +55,7 @@ bool Config::init(const std::string &cfg_path) {
       LOG(_ERROR_, "JsonReaderInst::get_instance()->getpcr() == nullptr");
       break;
     }
-    if (!pjsonreaderinst->getpcr()->parse(tmpbuf.get(), tmpbuf.get() + flen, &v,
-                                          &err)) {
+    if (!pjsonreaderinst->getpcr()->parse(tmpbuf.get(), tmpbuf.get() + flen, &v, &err)) {
       LOG(_ERROR_, "Config::init() parse config %s failed", cfg_path.c_str());
       break;
     }

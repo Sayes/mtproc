@@ -4,6 +4,8 @@
  * python3 test_pywrap.py
  */
 
+#if defined(SUPPORT_PYTHON2) || defined(SUPPORT_PYTHON3)
+
 #include <Python.h>
 #include <iostream>
 #include <vector>
@@ -38,7 +40,7 @@ static PyObject* func2(PyObject* self, PyObject* args) {
   Py_RETURN_FALSE;
 }
 
-#ifdef SUPPORT_PYTHON3
+#if defined(SUPPORT_PYTHON3)
 
 #define PYFUNC(name) \
   { #name, (PyCFunction)name, METH_VARARGS, "" }
@@ -54,15 +56,15 @@ PyMethodDef* get_all_methods() {
   return g_python_methods;
 }
 
-static struct PyModuleDef libpywrap = {PyModuleDef_HEAD_INIT, "libpywrap", "",
-                                       -1, get_all_methods()};
+static struct PyModuleDef libpywrap = {PyModuleDef_HEAD_INIT, "libpywrap", "", -1,
+                                       get_all_methods()};
 
 PyMODINIT_FUNC PyInit_libpywrap(void) {
   printf("%s\n", VERSION);
   return PyModule_Create(&libpywrap);
 }
 
-#else  // PYTHON2
+#elif defined(SUPPORT_PYTHON2)  // PYTHON2
 
 #define PYFUNC(name) \
   { #name, name, METH_VARARGS, "" }
@@ -83,5 +85,7 @@ PyMODINIT_FUNC initlibpywrap() {
   PyObject* module = Py_InitModule("libpywrap", get_all_methods());
   if (module == nullptr) return;
 }
-#endif  // SUPPORT_PYTHON3
+#endif
 }
+
+#endif

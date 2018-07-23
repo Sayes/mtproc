@@ -4,13 +4,9 @@
 #include <eupulogger4system.h>
 #include <unistd.h>
 
-WorkBaseThread::WorkBaseThread() : AocThread() {
-  LOG(_INFO_, "WorkBaseThread::WorkBaseThread()");
-}
+WorkBaseThread::WorkBaseThread() : AocThread() { LOG(_INFO_, "WorkBaseThread::WorkBaseThread()"); }
 
-WorkBaseThread::~WorkBaseThread() {
-  LOG(_INFO_, "WorkBaseThread::~WorkBaseThread()");
-}
+WorkBaseThread::~WorkBaseThread() { LOG(_INFO_, "WorkBaseThread::~WorkBaseThread()"); }
 
 void WorkBaseThread::reset() {}
 

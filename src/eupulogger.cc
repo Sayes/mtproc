@@ -3,9 +3,7 @@
 #include "include/eupulogger.h"
 
 #ifdef WITH_LOG4CXX
-CEupuLogger::CEupuLogger() {
-  log4cxx::PropertyConfigurator::configure("loggercfg.cfg");
-}
+CEupuLogger::CEupuLogger() { log4cxx::PropertyConfigurator::configure("loggercfg.cfg"); }
 
 CEupuLogger::CEupuLogger(const char *path) {}
 

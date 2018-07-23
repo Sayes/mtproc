@@ -20,8 +20,7 @@ void MongoClient::init(const std::string& strUri, const std::string& strDb) {
     client_ = mongocxx::client(uri);
     db_ = client_[strDb.c_str()];
   } catch (mongocxx::query_exception e) {
-    LOG(_ERROR_, "init mongocxx::client(%s)[%s] failed", strUri.c_str(),
-        strDb.c_str());
+    LOG(_ERROR_, "init mongocxx::client(%s)[%s] failed", strUri.c_str(), strDb.c_str());
   }
 }
 

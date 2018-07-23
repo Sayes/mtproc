@@ -21,8 +21,7 @@ void traversal_dir(const std::string& src_path, std::vector<pthinf>& pths) {
       pths.push_back(pi);
       std::string tmp1 = src_path;
       size_t pos = std::string::npos;
-      while ((pos = tmp1.find("//")) != std::string::npos)
-        tmp1.replace(pos, 2, "/");
+      while ((pos = tmp1.find("//")) != std::string::npos) tmp1.replace(pos, 2, "/");
       std::string tmp2 = tmp1.substr(0, tmp1.rfind("/"));
       Config::get_instance()->set_src_path(tmp2);
     }
@@ -48,8 +47,7 @@ void traversal_dir(const std::string& src_path, std::vector<pthinf>& pths) {
   closedir(d);
 }
 
-void traversal_lst(const std::string& src_path,
-                   std::vector<pthinf>& pathfilenames) {
+void traversal_lst(const std::string& src_path, std::vector<pthinf>& pathfilenames) {
   FILE* fp;
   char* line = nullptr;
   size_t len = 0;
@@ -78,8 +76,7 @@ std::string relative2absolut(const std::string& const_relpth) {
   relpth.erase(relpth.find_last_not_of(" ") + 1);
   if (relpth[0] == '/') return relpth;
   if (relpth[0] == '~') {
-    snprintf(dir, sizeof(dir), "%s%s", getenv("HOME"),
-             relpth.substr(1).c_str());
+    snprintf(dir, sizeof(dir), "%s%s", getenv("HOME"), relpth.substr(1).c_str());
     return std::string(dir);
   }
   if (relpth[0] != '.') {
@@ -91,8 +88,7 @@ std::string relative2absolut(const std::string& const_relpth) {
   std::vector<std::string> dirs;
   boost::split(dirs, strcwd, boost::is_any_of("/"), boost::token_compress_on);
   std::vector<std::string> relpths;
-  boost::split(relpths, relpth, boost::is_any_of("/"),
-               boost::token_compress_on);
+  boost::split(relpths, relpth, boost::is_any_of("/"), boost::token_compress_on);
 
   for (auto it : relpths) {
     if (it == ".") continue;
@@ -121,10 +117,8 @@ void mk_dest_dir(const std::vector<pthinf>& filenames) {
     return;
   }
   size_t pos = std::string::npos;
-  while ((pos = src_path.find("//")) != std::string::npos)
-    src_path.replace(pos, 2, "/");
-  while ((pos = dest_path.find("//")) != std::string::npos)
-    dest_path.replace(pos, 2, "/");
+  while ((pos = src_path.find("//")) != std::string::npos) src_path.replace(pos, 2, "/");
+  while ((pos = dest_path.find("//")) != std::string::npos) dest_path.replace(pos, 2, "/");
 
   for (auto it : filenames) {
     std::string tmp = it.pthfn.substr(0, it.pthfn.rfind("/"));
