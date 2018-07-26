@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 #include "include/config.h"
+#include "include/pthinf.h"
 #include "include/util.h"
 #include "include/workbasethread.h"
 
@@ -19,16 +20,21 @@ class XThread : public WorkBaseThread {
   virtual ~XThread();
 
   int process_task();
-
-  void set_filenames(std::vector<pthinf> ifns) { filenames_ = ifns; }
+  void set_range(std::vector<pthinf>::iterator range_begin,
+                 std::vector<pthinf>::iterator range_end) {
+    range_begin_ = range_begin;
+    range_end_ = range_end;
+  }
+  int get_id() { return id_; }
 
  private:
   int do_X_proc();
-  void doX4one(const std::string& strregtime);
+  void doX4one(pthinf& inf);
 
  private:
-  std::vector<pthinf> filenames_;
   int id_;
+  std::vector<pthinf>::iterator range_begin_;
+  std::vector<pthinf>::iterator range_end_;
   Config* pcfg_;
 };
 

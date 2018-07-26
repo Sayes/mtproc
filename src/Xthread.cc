@@ -31,14 +31,10 @@ int XThread::process_task() {
 }
 
 int XThread::do_X_proc() {
-  LOG(_INFO_, "XThread::do_X_proc() filenames_ cnt %d, id = %d", filenames_.size(), id_);
-
-  for (auto& it_fn : filenames_) {
-    doX4one(it_fn.pthfn);
+  for (auto& it_fn = range_begin_; it_fn != range_end_; ++it_fn) {
+    doX4one(*it_fn);
   }
   return 0;
 }
 
-void XThread::doX4one(const std::string& param) {
-  printf("%s\n", param.c_str());
-}
+void XThread::doX4one(pthinf& inf) { printf("%s\n", inf.pthfn.c_str()); }

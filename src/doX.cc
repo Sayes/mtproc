@@ -19,7 +19,7 @@ void do_X(std::vector<pthinf>& tasks, int thread_cnt);
 void init_system(int worker_cnt);
 void stop_system(int sig);
 void exit_system();
-void tasks_distribution(const std::vector<pthinf>&);
+void tasks_distribution(std::vector<pthinf>&);
 
 std::vector<XThread*> g_workers;
 
@@ -59,22 +59,19 @@ void exit_system() {
   g_workers.clear();
 }
 
-void tasks_distribution(const std::vector<pthinf>& pathfilenames) {
-  std::vector<std::vector<pthinf>> tasks;
-  std::vector<pthinf> emptyitem;
-  emptyitem.reserve(125000);
-  for (size_t i = 0; i < g_workers.size(); ++i) tasks.push_back(emptyitem);
-
-  int idx = 0;
-  for (auto it : pathfilenames) {
-    tasks[idx % g_workers.size()].push_back(it);
-    idx++;
-  }
-
-  idx = 0;
-  for (auto it : tasks) {
-    g_workers[idx]->set_filenames(it);
-    idx++;
+void tasks_distribution(std::vector<pthinf>& tasks) {
+  size_t step = tasks.size() / g_workers.size();
+  std::vector<pthinf>::iterator range_begin;
+  std::vector<pthinf>::iterator range_end;
+  std::vector<XThread*>::iterator it = g_workers.begin();
+  for (; it != g_workers.end(); ++it) {
+    range_begin = tasks.begin() + (*it)->get_id() * step;
+    if ((it + 1) != g_workers.end()) {
+      range_end = range_begin + step;
+    } else {
+      range_end = tasks.end();
+    }
+    (*it)->set_range(range_begin, range_end);
   }
 }
 
