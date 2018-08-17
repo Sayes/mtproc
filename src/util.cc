@@ -1,5 +1,6 @@
 #include "include/util.h"
 #include <dirent.h>
+#include <fcntl.h>
 #include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
@@ -7,7 +8,14 @@
 #include <boost/algorithm/string/split.hpp>
 #include <iostream>
 #include <vector>
+#include "include/base64.h"
 #include "include/config.h"
+
+std::string tob64(const std::string& orig) {
+  char buf[1024];
+  int len = base64_encode(buf, orig.c_str(), orig.size());
+  return std::string(buf, len);
+}
 
 void traversal_dir(const std::string& src_path, std::vector<pthinf>& pths) {
   DIR* d;
@@ -29,6 +37,7 @@ void traversal_dir(const std::string& src_path, std::vector<pthinf>& pths) {
   }
 
   std::string nxtpth;
+
   while ((file = readdir(d)) != nullptr) {
     if (strncmp(file->d_name, ".", 1) == 0) continue;
 
@@ -41,6 +50,22 @@ void traversal_dir(const std::string& src_path, std::vector<pthinf>& pths) {
     } else {
       pthinf pi;
       pi.pthfn = nxtpth;
+
+      std::string strfn = file->d_name;
+      std::size_t nfound = strfn.find_last_of(".");
+      std::string suff;
+      if (nfound != std::string::npos) {
+        suff = strfn.substr(nfound);
+        strfn = strfn.substr(0, nfound);
+      }
+
+      /*  // extra function
+      std::string b64nxtpth;
+      b64nxtpth = tob64(strfn);
+      pi.b64pthfn = src_path + "/" + b64nxtpth;
+      pi.b64pthfn += suff;
+      */
+
       pths.push_back(pi);
     }
   }  // while
@@ -149,4 +174,39 @@ void mk_dest_dir(const std::vector<pthinf>& filenames) {
     mkdir(pszDir, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
     free(pszDir);
   }  // for
+}
+
+int32_t execshell(const char* cmd, std::vector<std::string>& resvec) {
+  resvec.clear();
+  FILE* pp = popen(cmd, "r");
+  if (!pp) {
+    printf("popen() failed\n");
+    return -1;
+  }
+  char buf[1024];
+  while (fgets(buf, (sizeof(buf) - 1), pp) != NULL) {
+    printf("%s", buf);
+  }
+  pclose(pp);
+  return 0;
+}
+
+unsigned long file_wc(const char* file) {
+  unsigned char* p = nullptr;
+  int len = 0;
+  unsigned long linecnt = 0;
+  int fd;
+  size_t MAXBSIZE = 65536;
+  unsigned char buf[MAXBSIZE];
+  do {
+    if ((fd = open(file, O_RDONLY, 0)) < 0) break;
+    for (; (len = read(fd, buf, MAXBSIZE));) {
+      if (len == -1) break;
+      for (p = buf; len--;) {
+        if ((*p++) == '\n') ++linecnt;
+      }
+    }
+  } while (0);
+  close(fd);
+  return linecnt;
 }
